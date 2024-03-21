@@ -40,6 +40,18 @@
 </form>
 
 
+<%-- <portlet:actionURL var="exportURL" name="export" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+<a href="${exportURL}">Export to Excel</a> --%>
+
+<portlet:actionURL var="exportURL" name="exportXLSX" />
+
+<a href="${exportURL}">Export to Excel</a>
+
+<portlet:actionURL var="exportPdfURL" name="exportPDF" />
+
+<a href="${exportPdfURL}">Export to Pdf</a>
+
+
 
 
 <table class="table table-striped">

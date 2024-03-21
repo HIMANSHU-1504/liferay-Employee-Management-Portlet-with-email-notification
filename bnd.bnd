@@ -2,4 +2,4 @@ Bundle-Name: employee-management-system-liferay
 Bundle-SymbolicName: employee.management.system.liferay
 Bundle-Version: 1.0.0
 Export-Package: employee.management.system.liferay.constants
-Include-Resource: @
+Import-Package: *;resolution:=optional

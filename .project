@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>employee-management-system-liferay</name>
-	<comment>Project employee-management-system-liferay created by Buildship.</comment>
+	<comment>employee-management-system-liferay</comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -23,12 +23,37 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1710918107499</id>
+			<id>1711000124263</id>
 			<name></name>
-			<type>30</type>
+			<type>26</type>
 			<matcher>
-				<id>org.eclipse.core.resources.regexFilterMatcher</id>
-				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
+				<id>org.eclipse.ui.ide.orFilterMatcher</id>
+				<arguments>
+					<matcher>
+						<id>org.eclipse.ui.ide.multiFilter</id>
+						<arguments>1.0-name-matches-false-false-.git</arguments>
+					</matcher>
+					<matcher>
+						<id>org.eclipse.ui.ide.multiFilter</id>
+						<arguments>1.0-name-matches-false-false-.gradle</arguments>
+					</matcher>
+					<matcher>
+						<id>org.eclipse.ui.ide.multiFilter</id>
+						<arguments>1.0-name-matches-false-false-build</arguments>
+					</matcher>
+					<matcher>
+						<id>org.eclipse.ui.ide.multiFilter</id>
+						<arguments>1.0-name-matches-false-false-node_modules</arguments>
+					</matcher>
+					<matcher>
+						<id>org.eclipse.ui.ide.multiFilter</id>
+						<arguments>1.0-name-matches-false-false-node_modules_cache</arguments>
+					</matcher>
+					<matcher>
+						<id>org.eclipse.ui.ide.multiFilter</id>
+						<arguments>1.0-name-matches-false-false-tmp</arguments>
+					</matcher>
+				</arguments>
 			</matcher>
 		</filter>
 	</filteredResources>
