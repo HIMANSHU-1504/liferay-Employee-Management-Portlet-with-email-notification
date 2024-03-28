@@ -5,7 +5,6 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.liferay.bean.portlet.LiferayPortletConfiguration;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailServiceUtil;
@@ -16,22 +15,16 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,16 +35,10 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.MimeResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
-import javax.portlet.ProcessAction;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -405,55 +392,63 @@ public class EmployeePortlet extends MVCPortlet {
             log.error("Exception while exporting Excel file : ", e);
         }
     }
+    
+    //PDF
 
     public void exportPDF(ActionRequest actionRequest, ActionResponse actionResponse) {
-    	System.out.println("Inside export Action Method===========");
-        log.info("Inside export Action Method");
-
-        try {
-            List<Employee> employeesList = employeeLocalService.getEmployees(0, employeeLocalService.getEmployeesCount());
-
-            System.out.println("Inside try Block =========");
-
-            Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream("D:\\EmployeeDataPDF.pdf"));
-            document.open();
-
-            PdfPTable table = new PdfPTable(8); // 8 columns for employee data
-            table.setWidthPercentage(100); // Width 100%
-            table.setSpacingBefore(10f); // Space before table
-            table.setSpacingAfter(10f); // Space after table
-
-            // Set Column widths
-            float[] columnWidths = {1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f};
-            table.setWidths(columnWidths);
-
-            // Add header row
-            String[] columns = { "First Name", "Last Name", "Email", "Mobile", "Department", "Branch", "Designation", "Address" };
-            for (String column : columns) {
-                PdfPCell cell = new PdfPCell(new Paragraph(column));
-                table.addCell(cell);
-            }
-
-            // Fill data rows
-            for (Employee employee : employeesList) {
-                table.addCell(new PdfPCell(new Paragraph(employee.getFirstName())));
-                table.addCell(new PdfPCell(new Paragraph(employee.getLastName())));
-                table.addCell(new PdfPCell(new Paragraph(employee.getEmail())));
-                table.addCell(new PdfPCell(new Paragraph(employee.getMobileNumber())));
-                table.addCell(new PdfPCell(new Paragraph(String.valueOf(employee.getDepartmentId()))));
-                table.addCell(new PdfPCell(new Paragraph(String.valueOf(employee.getBranchId()))));
-                table.addCell(new PdfPCell(new Paragraph(String.valueOf(employee.getDesignationId()))));
-                table.addCell(new PdfPCell(new Paragraph(employee.getAddress())));
-            }
-
-            document.add(table);
-
-            document.close();
-        } catch (Exception e) {
-            System.out.println("Can't fetch PDF file");
-            log.error("Exception while exporting PDF file : ", e);
-        }
+    	
+    	System.out.println("Checking PDF Functionality");
+    	
+    	List<Employee> employeeList = employeeLocalService.getEmployees(0, employeeLocalService.getEmployeesCount());
+    	
+    	Document document = new Document();
+    	
+    	try {
+    		System.out.println("Inside 1st Try Block ");
+    		
+    		PdfWriter.getInstance(document, new FileOutputStream("D:\\EmployeeDataPDF.pdf"));
+    		document.open();
+    		
+    		PdfPTable table = new PdfPTable(8); // 8 columns for employee data
+	          table.setWidthPercentage(100); // Width 100%
+	          table.setSpacingBefore(10f); // Space before table
+	          table.setSpacingAfter(10f); // Space after table
+	
+	          float[] columnWidths = {1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f};
+	          table.setWidths(columnWidths);
+	
+	          String[] columns = { "First Name", "Last Name", "Email", "Mobile", "Department", "Branch", "Designation", "Address" };
+	          for (String column : columns) {
+	        	  
+	        	  System.out.println("Creating Columns");
+	        	  
+	              PdfPCell cell = new PdfPCell(new Paragraph(column));
+	              table.addCell(cell);
+	          }
+	
+	          for (Employee employee : employeeList) {
+	        	  
+	        	  System.out.println("Fill row Data");
+	        	  
+	              table.addCell(new PdfPCell(new Paragraph(employee.getFirstName())));
+	              table.addCell(new PdfPCell(new Paragraph(employee.getLastName())));
+	              table.addCell(new PdfPCell(new Paragraph(employee.getEmail())));
+	              table.addCell(new PdfPCell(new Paragraph(employee.getMobileNumber())));
+	              table.addCell(new PdfPCell(new Paragraph(String.valueOf(employee.getDepartmentId()))));
+	              table.addCell(new PdfPCell(new Paragraph(String.valueOf(employee.getBranchId()))));
+	              table.addCell(new PdfPCell(new Paragraph(String.valueOf(employee.getDesignationId()))));
+	              table.addCell(new PdfPCell(new Paragraph(employee.getAddress())));
+	          }
+	
+	          document.add(table);
+	
+	          document.close();
+    		
+    	}
+    	catch (Exception e) {
+			// TODO: handle exception
+    		System.out.println("Cant fetch the PDF");
+		}
     }
 
 }

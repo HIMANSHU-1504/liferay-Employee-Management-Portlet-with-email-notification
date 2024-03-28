@@ -3,3 +3,10 @@ Bundle-SymbolicName: employee.management.system.liferay
 Bundle-Version: 1.0.0
 Export-Package: employee.management.system.liferay.constants
 Import-Package: *;resolution:=optional
+
+Bundle-ClassPath:.,lib/itext.jar
+
+-includeresource:lib/itext.jar=itextpdf-*.jar
+
+Import-Package = !org.apache.jcp.xml.dsig.internal.dom,!org.bouncycastle.*,*
+    
